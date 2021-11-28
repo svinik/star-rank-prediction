@@ -21,45 +21,20 @@ def get_page_ranks(driver):
         return get_page_ranks(driver)
 
     for review_url in review_urls:
-        # WebDriverWait(driver, 10).until(
-        #     lambda x: len(x.find_elements_by_class_name("review_count")) == reviews_len)
-        # review = driver.find_elements_by_class_name("review_count")[min(i, reviews_len)]
-        # review_url = review.get_attribute("href")
-        # title = WebDriverWait(driver, 10).until(
-        #     lambda x: x.find_elements_by_class_name("property_title")[min(i, reviews_len - 1)])
-
-        # actions = ActionChains(driver)
-        # actions.move_to_element(title).perform()
-
-        # if review.text == '0 reviews':
-        #     break
 
         driver.execute_script("window.open('');")
         driver.switch_to_window(driver.window_handles[1])
         driver.get(review_url)
 
-        # try:
-        #     review.click()
-        # except ElementClickInterceptedException:
-        #     actions = ActionChains(driver)
-        #     actions.move_to_element(title).perform()
-        #     review.click()
-
-        # window_before = driver.window_handles[0]
-        # window_after = driver.window_handles[1]
-        #
-        # driver.switch_to.window(window_after)
-
         name = WebDriverWait(driver, 10).until(lambda x: x.find_element_by_id("HEADING")).text.replace(',', '')
         WebDriverWait(driver, 10).until(lambda x: x.find_element_by_class_name("dQNlC"))
         rankings = driver.find_elements_by_class_name("dQNlC")
 
-        curr_ranks.append([name, get_rank_text(rankings[0]), get_rank_text(rankings[1]), get_rank_text(rankings[2]),
+        curr_ranks.append([review_url, name, get_rank_text(rankings[0]), get_rank_text(rankings[1]), get_rank_text(rankings[2]),
                       get_rank_text(rankings[3]), get_rank_text(rankings[4])])
 
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
-        # driver.back()
 
     return curr_ranks
 
@@ -94,7 +69,7 @@ if __name__ == '__main__':
         driver.close()
 
     finally:
-        header = ['name', 'excellent', 'very_good', 'average', 'poor', 'terrible']
+        header = ['url', 'name', 'excellent', 'very_good', 'average', 'poor', 'terrible']
 
         with open('hotel_rankings.csv', 'w', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)

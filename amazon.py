@@ -39,7 +39,7 @@ def get_page_ranks(driver):
         star2 = list(filter(lambda x: "2 star" in x.text, rows))[0]
         star1 = list(filter(lambda x: "1 star" in x.text, rows))[0]
 
-        curr_ranks.append([name, get_perc_from_row(star5), get_perc_from_row(star4), get_perc_from_row(star3), get_perc_from_row(star2), get_perc_from_row(star1), total])
+        curr_ranks.append([review_url, name, get_perc_from_row(star5), get_perc_from_row(star4), get_perc_from_row(star3), get_perc_from_row(star2), get_perc_from_row(star1), total])
         print(','.join(curr_ranks[len(curr_ranks) - 1]))
 
         driver.close()
@@ -81,13 +81,13 @@ if __name__ == '__main__':
         driver.close()
 
     finally:
-        header = ['name', 'excellent', 'very_good', 'average', 'poor', 'terrible']
+        header = ['url', 'name', 'excellent', 'very_good', 'average', 'poor', 'terrible']
 
         with open('rankings.csv', 'w', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
 
             # write the header
-            # writer.writerow(header)
+            writer.writerow(header)
 
             # write multiple rows
             writer.writerows(ranks)
